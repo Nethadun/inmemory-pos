@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="js/semantic.min.js"></script>
+    <style>
+        .con{
+            width: 1130px;
+            padding-right: 10px;
+            position: absolute;
+            top: 100px;
+            left: 220px;
+        }
+        #nav{
+            height: 585px;
+            position: fixed;
+            top: 54px;
+        }
+        #header{
+            z-index: 1000;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="ui inverted menu"id="header">
+    <a class="item" href="index.html">
+        Home
+    </a>
+    <a class="item">
+        Messages
+    </a>
+    <a class="item">
+        Friends
+    </a>
+    <a class="item">
+        <img src="img/Logout%20Rounded%20Left_48px.png" alt="">
+    </a>
+</div>
+<div class="ui inverted vertical pointing menu" id="nav">
+    <a class="item" href="index.html">
+        Home
+    </a>
+    <a class="item" href="customer.html">
+        Customer
+    </a>
+    <a class="item" href="item.html">
+        Item
+    </a>
+    <a class="active item" href="order.html">
+        Place Order
+    </a>
+    <a class="item" href="report.html">
+        Report
+    </a>
+</div>
+<div class="con">
+    <div class="ui form">
+        <div class="field">
+            <label>Oid</label>
+            <input placeholder="oid" type="text" id="oid">
+            <br>
+        </div>
+        <div class="field">
+            <div>Order Date: <label id="lblOrderDate"></label></div>
+            <br>
+        </div>
+        <div class="field">
+            <label>Customer ID</label><select id="cmbSelectcustomer">
+            <option selected disabled hidden value="" id="cid">Select Customer ID</option>
+        </select>
+        </div>
+        <div class="field">
+            <div>Customer Name :<label id="lblCustomerName"></label></div>
+        </div>
+        <div class="field">
+            <label>Item code</label><select  id="cmbSelectItem">
+            <option selected disabled hidden value="" name="code">Select Item code</option>
+        </select>
+        </div>
+        <div class="field">
+            <div>Item Name : <label id="lblItemName"></label></div>
+        </div>
+        <div class="field">
+            <div>Qty. On Hand : <label id="lblqtyonhand"></label></div>
+        </div>
+        <div class="field">
+            <div>Unit Price : <label id="lblunitprice"></label></div>
+        </div>
+
+        <div class="two fields">
+            Qty.
+            <input class="form-control" type="number" id="txtqty">
+            Unit Price:
+            <input placeholder="unit price" type="text" id="txtUnit">
+            <div class="field">
+                <span>Total: <label id="lblTotal">0.0</label></span>
+            </div>
+        </div>
+    </div>
+    <div class="inline field">
+        <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" class="hidden">
+            <label>I agree to the terms and Details</label>
+        </div>
+    </div>
+    <div class="ui inverted segment">
+        <button class="ui inverted button" id="btnaddcart">Proceed</button>
+    </div>
+    <table class="ui selectable inverted table" id="cartTable">
+        <thead>
+        <tr>
+            <th class="text-center">Order ID</th>
+            <th class="text-center">Order Date</th>
+            <th class="text-center">qty</th>
+            <th class="text-right">unitPrice</th>
+            <th class="text-right">amount</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <br>
+    <br>
+</div>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/inMemory-DB.js"></script>
+<script src="js/date-formatter.js"></script>
+<script>
+    //set current Date
+    function setDate() {
+        var date = new Date();
+        var CurDate = date.format("yyyy-mm-dd");
+        $("#lblOrderDate").text(CurDate);
+    }
+
+    setDate();
+    var orderDetails = [];
+    $(document).ready(function () {
+        for (var i = 0; i < CUSTOMERS.length; i++) {
+            $("#cmbSelectcustomer").append('<option value="' + CUSTOMERS[i].id + '">' + CUSTOMERS[i].id + '</option>')
+        }
+
+        for (var i = 0; i < ITEMS.length; i++) {
+            $("#cmbSelectItem").append('<option value="' + ITEMS[i].code + '">' + ITEMS[i].code + '</option>')
+        }
+        reset();
+    });
+
+    function findCustomer(customerId) {
+        for (var index in CUSTOMERS) {
+            var customer = CUSTOMERS[index];
+            if (customer.id == customerId) {
+                return customer;
+            }
+        }
+    }
+
+    $("#cmbSelectcustomer").change(function () {
+        var customerID = $(this).val();
+        if (!customerID) {
+            customerName = "";
+        } else {
+            var customerName = findCustomer(customerID).name;
+        }
+        $("#lblCustomerName").text(customerName);
+    });
+
+    function findItem(itemCode) {
+        for (var index in ITEMS) {
+            var items = ITEMS[index];
+            if (items.code == itemCode) {
+                return items;
+            }
+        }
+    }
+
+    $("#cmbSelectItem").change(function () {
+        var itemCode = $(this).val();
+        if (itemCode) {
+            var item = findItem(itemCode);
+            $("#lblItemName").text(item.description);
+            $("#lblunitprice").text(item.unitPrice);
+            $("#lblqtyonhand").text(item.qtyOnHand);
+        } else {
+            $("#lblItemName").text("");
+            $("#lblunitprice").text("");
+            $("#lblqtyonhand").text("");
+            $("#txtqty").val("");
+        }
+    });
+    $("#btnAddCart").click(function () {
+        var orderID = $("#lblOrderID").text();
+        var orderdate = $("#lblOrderDate").text();
+        var itemDescription = $("#lblItemName").text();
+        var itemCode = $("#cmbSelectItem").val();
+        var qty = parseInt($("#txtqty").val());
+        var unitPrice = parseFloat($("#lblunitprice").text());
+        var total = unitPrice * qty;
+        var item = findItem(itemCode);
+
+        if (qty <= 0 || qty > item.qtyOnHand) {
+            alert("Invalid Qty");
+            $("#txtqty").addClass('invalid-qty');
+            return;
+        }
+
+        $("#txtqty").removeClass('invalid-qty');
+
+        var currentRow = isItemExists(itemCode);
+
+        // Determines whether I want to update or add
+        if ($("#btnadd").text().trim() == "Update Cart") {
+            // Update
+            var currentQty = parseInt($(currentRow).find("td:nth-child(5)").text());
+            item.qtyOnHand += currentQty;
+            $(currentRow).find("td:nth-child(5)").text(qty);
+            $(currentRow).find("td:nth-child(7)").text(total);
+            calculateTotal();
+
+            item.qtyOnHand -= qty;
+            $("#btnadd").html('<i class="fas fa-cart-plus"></i> Add to Cart');
+            $("#cmbSelectItem").val("").trigger("change");
+            $("#cmbSelectItem").attr("disabled", false);
+            // $("#txtQty").attr("disabled",false);
+
+            return;
+        }
+
+
+        if (currentRow) {
+            var currentQty = parseInt($(currentRow).find("td:nth-child(5)").text());
+            currentQty += qty;
+            total = unitPrice * currentQty;
+            $(currentRow).find("td:nth-child(5)").text(currentQty);
+            $(currentRow).find("td:nth-child(7)").text(total);
+            calculateTotal();
+
+            item.qtyOnHand -= qty;
+            $("#cmbSelectItem").val("").trigger("change");
+
+            return;
+        }
+
+        // var html = `<tr>
+        //                     <td class="text-center">${orderID}</td>
+        //                     <td class="text-center">${orderdate}</td>
+        //                     <td>${itemDescription}</td>
+        //                     <td class="text-center">${itemCode}</td>
+        //                     <td class="text-center">${qty}</td>
+        //                     <td class="text-right">${unitPrice}</td>
+        //                     <td class="text-right">${total}</td>
+        //                     <td><div class="icon-delete"></div></td>
+        //                 </tr>`;
+
+        item.qtyOnHand -= qty;
+        $("#tblOrderDetails tbody").append(html);
+
+        calculateTotal();
+        $("#cmbItemCode").val("").trigger("change");
+        function calculateTotal() {
+            var total = 0.0;
+            $("#tblOrderDetails tbody tr").each(function () {
+                total += parseFloat($(this).find("td:nth-child(5)").text());
+            });
+            $("#lblTotal").text(total);
+        }
+
+        $("#tblOrderDetails tbody tr").off("click");
+        $("#tblOrderDetails tbody tr").click(function () {
+            var itemCode = $(this).find("td:first-child").text();
+            var qty = parseInt($(this).find("td:nth-child(4)").text());
+            $("#cmbItemCode").val(itemCode).trigger("change");
+            $("#txtQty").val(qty);
+            $("#btnAddCart").html('<i class="fas fa-cart-plus"></i> Update Cart');
+            $("#cmbItemCode").attr("disabled", true);
+        });
+
+        $("#tblOrderDetails .icon-delete").off("click");
+        $("#tblOrderDetails .icon-delete").click(function (eventData) {
+            eventData.stopPropagation();
+            if (confirm("Are you sure that you want to delete this item?")) {
+                var qty = parseInt($(this).parents("tr").find("td:nth-child(4)").text());
+                var itemCode = $(this).parents("tr").find("td:first-child").text();
+                var item = findItem(itemCode);
+                item.qtyOnHand += qty;
+
+                $(this).fadeOut(500, function () {
+                    $(this).parents("tr").remove();
+                    calculateTotal();
+                });
+            }
+        });
+
+
+    });
+
+    //add data to the cart
+    let array = new Array();
+    $("#btnaddcart").click(function () {
+        let oid = $("#oid").val();
+        let date = $("#lblOrderDate").val();
+        let orderQty = $("#txtqty").val();
+        let unitPrice = $("#txtUnit").val();
+        let amount = orderQty * unitPrice;
+        array.push(new Array({oid,date,orderQty,unitPrice,amount}));
+
+        var row = "<tr><td>" +oid + "</td><td>" + date + "</td><td>" + orderQty + "</td><td>" + unitPrice +
+            "</td><td>" + amount + "</td></tr>";
+        $("#cartTable").append(row);
+    });
+    //delete Cart Order
+    $('#btndelete').click(function () {
+        console.log(array);
+        for (var i in array){
+            var temp=array[i] ;
+            for (var row in temp){
+                let val=temp[row];
+                alert(val[1]);
+            }
+        }
+    });
+
+
+</script>
+</body>
+</html>

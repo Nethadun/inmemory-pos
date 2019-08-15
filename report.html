@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="js/semantic.min.js"></script>
+    <style>
+        .con{
+            width: 1130px;
+            padding-right: 10px;
+            margin-bottom: 50px;
+            position: absolute;
+            top: 100px;
+            left: 220px;
+        }
+        #nav{
+            height: 585px;
+            position: fixed;
+            top: 54px;
+        }
+        #header{
+            z-index: 1000;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="ui inverted menu" id="header">
+    <a class="active item" href="index.html">
+        Home
+    </a>
+    <a class="item">
+        Messages
+    </a>
+    <a class="item">
+        Friends
+    </a>
+    <a class="item">
+        <img src="img/Logout%20Rounded%20Left_48px.png" alt="">
+    </a>
+</div>
+<div class="ui inverted vertical pointing menu" id="nav">
+    <a class="item" href="index.html">
+        Home
+    </a>
+    <a class="item" href="customer.html">
+        Customer
+    </a>
+    <a class="item" href="item.html">
+        Item
+    </a>
+    <a class="item" href="order.html">
+        Place Order
+    </a>
+    <a class="active item">
+        Report
+    </a>
+</div>
+<div class="con">
+    <div class="ui center aligned basic segment" style="width: 100%">
+        <div class="ui left icon action input">
+            <i class="search icon"></i>
+            <input type="text" placeholder="Order #">
+            <div class="ui blue submit button">Search</div>
+        </div>
+        <div class="ui horizontal divider">
+            Or
+        </div>
+        <div class="ui teal labeled icon button">
+            <a href="order.html" style="color: white">Quick Order</a>
+            <i class="add icon"></i>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="ui inverted segment">
+    <div class="ui inverted form">
+        <div class="two fields">
+            <div class="field">
+                <label>From :</label>
+                <input placeholder="From" type="date">
+            </div>
+            <div class="field">
+                <label>To :</label>
+                <input placeholder="To" type="date">
+            </div>
+        </div>
+    </div>
+        <br>
+        <br>
+    <table class="ui selectable inverted table">
+        <thead>
+        <tr>
+            <th>OrderID</th>
+            <th>Customer Name</th>
+            <th>Total</th>
+            <th>Amount</th>
+            <th class="right aligned">Balance</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>OID-001</td>
+            <td>Nirmal perera</td>
+            <td>2050</td>
+            <td>2450</td>
+            <td class="right aligned">0</td>
+        </tr>
+        <tr>
+            <td>OID-051</td>
+            <td>Nirmal perera</td>
+            <td>1500</td>
+            <td>1350</td>
+            <td class="right aligned">350</td>
+        </tr>
+        <tr>
+            <td>OID-986</td>
+            <td>Pasindu Bhashitha</td>
+            <td>2000</td>
+            <td>1800</td>
+            <td class="right aligned">0</td>
+        </tr>
+        <tr>
+            <td>OID-023</td>
+            <td>Kamal perera</td>
+            <td>15000</td>
+            <td>13500</td>
+            <td class="right aligned">3500</td>
+        </tr>
+        <tr>
+            <td>OID-033</td>
+            <td>Kavinda Dilshan</td>
+            <td>12000</td>
+            <td>10800</td>
+            <td class="right aligned">0</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+</div>
+</div>
+</body>
+</html>

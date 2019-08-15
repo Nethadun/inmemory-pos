@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/semantic.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="js/semantic.min.js"></script>
+    <style>
+        .con{
+            width: 1130px;
+            padding-right: 10px;
+            position: absolute;
+            top: 100px;
+            left: 220px;
+        }
+        #nav{
+            height: 585px;
+            position: fixed;
+            top: 54px;
+        }
+        #header{
+            z-index: 1000;
+            position: fixed;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="ui inverted menu" id="header">
+    <a class="active item" href="index.html">
+        Home
+    </a>
+    <a class="item">
+        Messages
+    </a>
+    <a class="item">
+        Friends
+    </a>
+    <a class="item">
+        <img src="img/Logout%20Rounded%20Left_48px.png" alt="">
+    </a>
+</div>
+<div class="ui inverted vertical pointing menu" id="nav">
+    <a class="item" href="index.html">
+        Home
+    </a>
+    <a class="item" href="customer.html">
+        Customer
+    </a>
+    <a class="active item" href="item.html">
+        Item
+    </a>
+    <a class="item" href="order.html">
+        Place Order
+    </a>
+    <a class="item" href="report.html">
+        Report
+    </a>
+</div>
+<div class="con">
+    <div class="ui form">
+        <div class="field">
+            <label>Code</label>
+            <input placeholder="Code" type="text" id="code" name="code">
+            <br>
+        </div>
+        <div class="field">
+            <label>Item Name</label>
+            <input placeholder="Item Name" type="text" id="name" name="name">
+        </div>
+        <div class="field">
+            <label>Qty On Hand</label>
+            <input placeholder="Qty On Hand" type="text" id="qty" name="qty">
+        </div>
+        <div class="field">
+            <label>Unit Price</label>
+            <input placeholder="Unit Price" type="text" id="unit" name="unit">
+        </div>
+    </div>
+    <div class="inline field">
+        <div class="ui checkbox">
+            <input type="checkbox" tabindex="0" class="hidden">
+            <label>I agree to the terms and Details</label>
+        </div>
+    </div>
+    <div class="ui inverted segment">
+        <button class="ui inverted button" onclick="addDataTo()" id="btn-validation">Save</button>
+        <button class="ui inverted yellow button" onclick="updatedetails()" id="update">Update</button>
+        <button class="ui inverted red button" onclick="myDeleteFunction()" id="delete">Delete</button>
+        <button class="ui inverted green button">Refresh</button>
+
+    </div>
+    <table class="ui selectable inverted table" id="table1">
+        <thead>
+        <tr>
+            <th>Code</th>
+            <th>Item Name</th>
+            <th>Qty On Hand</th>
+            <th class="right aligned">Unit Price</th>
+        </tr>
+        </thead>
+    </table>
+    <script>
+        function addDataTo() {
+            var table=document.getElementById("table1"),
+                newRow=table.insertRow(table.length),
+                cell1=newRow.insertCell(0),
+                cell2=newRow.insertCell(1),
+                cell3=newRow.insertCell(2),
+                cell4=newRow.insertCell(3),
+
+                code=
+                    document.getElementById("code").value,
+                name=
+                    document.getElementById("name").value,
+                qty=
+                    document.getElementById("qty").value,
+                unit=
+                    document.getElementById("unit").value;
+
+            cell1.innerHTML=code;
+            cell2.innerHTML=name;
+            cell3.innerHTML=qty;
+            cell4.innerHTML=unit;
+        }
+    </script>
+    <script>
+        function myDeleteFunction() {
+            document.getElementById("table1").deleteRow(1);
+        }
+    </script>
+    <br>
+    <br>
+</div>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/itemController.js"></script>
+</body>
+</html>
